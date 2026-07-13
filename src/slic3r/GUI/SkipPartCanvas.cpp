@@ -450,6 +450,8 @@ void SkipPartCanvas::AutoSetCursor()
     if(is_draging_ || fixed_draging_)
         SetCursor(wxCursor(wxCURSOR_HAND));
     else
+        // A hidden cursor over a pannable canvas confuses users and blocks
+        // WM_SETCURSOR from restoring visibility after touch input.
         SetCursor(wxCursor(wxCURSOR_ARROW));
 }
 
