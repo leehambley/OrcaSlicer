@@ -902,8 +902,12 @@ WXLRESULT MainFrame::MSWWindowProc(WXUINT nMsg, WXWPARAM wParam, WXLPARAM lParam
 
     case WM_NCHITTEST: {
         if (IsMaximized()) {
-            // When maximized, no resize border
-            return HTCAPTION;
+            // When maximized, only treat topbar as caption so WM_SETCURSOR still
+            // reaches the client area (needed for cursor restoration after touch).
+            wxPoint mouse_pos = ::wxGetMousePosition();
+            if (m_topbar && m_topbar->GetScreenRect().Contains(mouse_pos))
+                return HTCAPTION;
+            break;
         }
 
         // Allow resizing from top of the title bar
