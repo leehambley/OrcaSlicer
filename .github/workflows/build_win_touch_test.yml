@@ -1,0 +1,22 @@
+name: Build Windows x64 (touchscreen cursor test)
+
+# Fork-only: builds just Windows x64 so the fix can be tried on a real machine.
+# Download the OrcaSlicer_Windows_*_portable artifact from the run summary.
+on:
+  push:
+    branches:
+      - ci/win-test-touchscreen-cursor
+  workflow_dispatch:
+
+concurrency:
+  group: build-win-touch-test-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build_windows:
+    name: Build Windows x64
+    uses: ./.github/workflows/build_check_cache.yml
+    with:
+      os: windows-latest
+      arch: x64
+    secrets: inherit
